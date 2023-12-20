@@ -15,12 +15,12 @@ class PhySys:
     # ini_state - начальное состояние
     # horizon - кол во кадров
     # control_val - двумерный массив размера horizon, хранит 4 числа - управление моторами квадрокоптера
-    def integrate_sys(self, ini_state, horizon, control_val):
+    def integrate_sys(self, ini_state, horizon, control):
         state_traj = np.zeros((horizon + 1, self.n_state))
         state_traj[0, :] = ini_state
         for t in range(horizon):
             curr_x = state_traj[t, :]
-            curr_u = np.array(control_val[t])
+            curr_u = np.array(control(curr_x))
 
             state_traj[t + 1, :] = self.dyn_fn(curr_x, curr_u).full().flatten()
         return state_traj

@@ -8,9 +8,9 @@ from quadrotor import Quadrotor
 device_default = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_env(env_name = "quadrotor", sigma=1, device=device_default,
-              activation='tanh', load_model=False, num_train=10, num_warmup=10,
+              activation='tanh', load_model=False, num_train=0, num_warmup=1,
               num_episodes_hnet=1024, num_episodes_adj=2048, rate=1.5,
-              num_hnet_train_max=10000, num_adj_train_max=1000,
+              num_hnet_train_max=10000, num_adj_train_max=100,
               batch_size_hnet=32, batch_size_hnet_sample=256, batch_size_adj=64,
               update_interval_custom=-1, log_interval_custom=-1, stop_train_condition=0.01,
               model_dir='models/', lr_change=False, lr_hnet_custom=1e-3, lr_adj_custom=1e-3):
