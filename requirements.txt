@@ -4,3 +4,4 @@ matplotlib>=3.5.3
 torch>=2.1.2
 torchdiffeq>=0.2.3
 torchsde>=0.2.6
+wandb>=0.16.1
