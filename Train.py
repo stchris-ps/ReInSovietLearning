@@ -3,6 +3,7 @@ from TrainUtils import training, get_environment, get_architectures, get_train_p
 import torch
 import numpy as np
 import wandb
+from quadrotor import Quadrotor
 
 device_default = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

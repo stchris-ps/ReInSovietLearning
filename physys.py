@@ -1,3 +1,4 @@
+import casadi
 import numpy as np
 from casadi import *
 
@@ -17,10 +18,10 @@ class PhySys:
     def integrate_sys(self, ini_state, horizon, control_val):
         state_traj = np.zeros((horizon + 1, self.n_state))
         state_traj[0, :] = ini_state
-
         for t in range(horizon):
             curr_x = state_traj[t, :]
             curr_u = np.array(control_val[t])
+
             state_traj[t + 1, :] = self.dyn_fn(curr_x, curr_u).full().flatten()
         return state_traj
 
@@ -28,4 +29,5 @@ class PhySys:
     # control_val - массив размера 4 - управление моторами квадрокоптера на текущем шаге
     def next_step(self, state, control_val):
         new_state = self.dyn_fn(state, np.array(control_val)).full().flatten()
+
         return new_state

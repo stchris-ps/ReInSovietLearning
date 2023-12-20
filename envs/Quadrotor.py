@@ -1,3 +1,0 @@
-
-class Quadrotor():
-    pass

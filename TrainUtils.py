@@ -9,7 +9,7 @@ import torch
 from torchdiffeq import odeint, odeint_adjoint
 from torchsde import sdeint
 from CommonNets import Mlp
-from envs.Quadrotor import Quadrotor
+from envs.dynamic import QuadroCopter
 from ModelNets import HDNet, HDStochasticNet
 
 MAX_VAL = 10.0
@@ -18,7 +18,8 @@ LEAST_NUM_TRAIN = 10
 
 def get_environment(name):
     if name == 'quadrotor':
-        return Quadrotor(0.5)
+        return QuadroCopter()
+
 def get_architectures():
     q_dim = 3 # Кол-во измерений
     adj_net = Mlp(input_dim=q_dim, output_dim=q_dim, layer_dims=[8, 16, 32], activation="tanh")
@@ -29,7 +30,7 @@ def get_architectures():
 def get_train_params():
     T_hnet = 10
     T_adj = 1
-    n_timesteps = 0.5
+    n_timesteps = 50
 
     control_coef = 0.5
     lr_hnet, lr_adj = 1e-3, 1e-4

@@ -1,3 +1,4 @@
+import casadi
 from casadi import *
 import numpy as np
 import matplotlib.pyplot as plt
@@ -109,6 +110,7 @@ class Quadrotor:
         self.X = vertcat(self.r_I, self.v_I, self.q, self.w_B)
         self.U = self.T_B
         self.f = vertcat(dr_I, dv_I, dq, dw)
+
 
     # инициализация функции стоимости
     def initCost(self, wr=None, wv=None, wq=None, ww=None, wthrust=0.1):
