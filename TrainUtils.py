@@ -8,13 +8,17 @@ import numpy as np
 import torch
 from torchdiffeq import odeint, odeint_adjoint
 from torchsde import sdeint
-
 from CommonNets import Mlp
+from envs.Quadrotor import Quadrotor
 from ModelNets import HDNet, HDStochasticNet
 
 MAX_VAL = 10.0
 LEAST_NUM_TRAIN = 10
 
+
+def get_environment(name, coef = 0.5):
+    if name == 'quadrotor':
+        return Quadrotor(control_coef = coef)
 def get_architectures():
     q_dim = 3 # Кол-во измерений
     adj_net = Mlp(input_dim=q_dim, output_dim=q_dim, layer_dims=[8, 16, 32], activation="tanh")
