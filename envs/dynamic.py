@@ -123,5 +123,6 @@ class QuadroCopter(ContinuousEnv):
         ini_q = toQuaternion(0, [1, -1, 1])
         ini_w = [0.0, 0.0, 0.0]
         ini_state = ini_r_I + ini_v_I + ini_q + ini_w
+        print("ini_state", ini_state)
         return ini_state
 
