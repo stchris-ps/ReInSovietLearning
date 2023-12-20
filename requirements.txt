@@ -2,3 +2,5 @@ numpy>=1.21.6
 casadi>=3.6.4
 matplotlib>=3.5.3
 torch>=2.1.2
+torchdiffeq>=0.2.3
+torchsde>=0.2.6
