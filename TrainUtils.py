@@ -235,7 +235,7 @@ def train_adjoint(sigma, device, env, num_episodes, adj_net, hnet,
     optim_adj.zero_grad()
     # Sample data qs for training adjoint net and times
     qs = torch.tensor(env.sample_q(num_episodes), dtype=torch.float)
-    generator = sample_generator(qs, batch_size)
+    generator = sample_generator(qs, batch_size)#
     times = list(np.linspace(0, T_end, 2))
     times = torch.tensor(times, device=device, requires_grad=True)
     # Now train the adjoint net
