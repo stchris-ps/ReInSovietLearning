@@ -103,15 +103,17 @@ class QuadroCopter(ContinuousEnv):
         return arr
 
     def L(self, q, u):
-        dx = q[0] - 5
-        dy = q[1] - 5
-        dz = q[1] - 5
-        return dx ** 2 + dy ** 2 + dz ** 2 + self.control_coef * np.dot(u, u)
+        print(q)
+        print(u)
+        dx = q[0][0] - 5
+        dy = q[0][1] - 5
+        dz = q[0][2] - 5
+        return np.array([dx ** 2 + dy ** 2 + dz ** 2 + self.control_coef * np.dot(u[0], u[0])])
 
     def g(self, q):
-        dx = q[0] - 5
-        dy = q[1] - 5
-        dz = q[1] - 5
+        dx = q[0][0] - 5
+        dy = q[0][1] - 5
+        dz = q[0][1] - 5
         d = dx ** 2 + dy ** 2 + dz ** 2
         return d ** 2
 

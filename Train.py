@@ -16,6 +16,7 @@ def train_env(env_name = "quadrotor", sigma=1, device=device_default,
               model_dir='models/', lr_change=False, lr_hnet_custom=1e-3, lr_adj_custom=1e-3):
     # Initialize networks with specific architectures detailed in arch_file
     _, adj_net, hnet, hnet_target = get_architectures()
+    print("get_architectures")
     # Initialize hyperparameters detailed in param_file
     T_hnet, T_adj, n_timesteps, control_coef, lr_hnet, lr_adj, update_interval, log_interval_hnet = get_train_params()
     # Get environment (with specific (quadratic) control coefficient)
