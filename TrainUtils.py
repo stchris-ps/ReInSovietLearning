@@ -158,7 +158,7 @@ def train_hnet(sigma, device, env, num_episodes, memory, adj_net, hnet, hnet_tar
         if iter % log_interval == log_interval - 1:
             print('\nIter {}: Average loss for (pretrained) reduced Hamiltonian network: {:.3f}'.format(iter + 1,
                                                                                                         total_loss / log_interval))
-            wandb.log({"HNet Loss": total_loss / log_interval})
+            print({"HNet Loss": total_loss / log_interval})
             total_loss = 0
         iter += 1
     # Additional training for reduced Hamiltonian
@@ -179,6 +179,7 @@ def train_hnet(sigma, device, env, num_episodes, memory, adj_net, hnet, hnet_tar
     print('\nDone training for Hamiltonian net.')
 
 def sample_generator(qs, batch_size, shuffle=True):
+    qs = qs[None, :]
     index = 0
     # initialize the list that will contain the current batch
     cur_batch = []
@@ -190,6 +191,7 @@ def sample_generator(qs, batch_size, shuffle=True):
     if shuffle:
         random.shuffle(data_index)
     # Infinite loop for generating samples
+
     while True:
         if index >= num_q:
             # Reset the index
@@ -197,7 +199,7 @@ def sample_generator(qs, batch_size, shuffle=True):
             if shuffle:
                 random.shuffle(data_index)
         q = qs[data_index[index]]
-        cur_batch.append(q.reshape(1, -1))
+        cur_batch.append(q.reshape(1, 13))
         index += 1
 
         # if enough sample, then export them and reset cur_batch tmp storage
@@ -210,6 +212,7 @@ def fit_adjoint(q, times, adj_net, HDnet, optim_adj, device):
     criterion = torch.nn.SmoothL1Loss()
     p = adj_net(q.to(device))
     qp = torch.cat((q.to(device), p), axis=1)
+    times.requires_grad = False
     qps = sdeint(HDnet, qp, times)
     _, pt = torch.chunk(qps[-1], 2, axis=1)
     pt = torch.clip(pt, -MAX_VAL, MAX_VAL)  # Clipping if things are stochastic
@@ -248,7 +251,7 @@ def train_adjoint(sigma, device, env, num_episodes, adj_net, hnet,
         total_loss += loss_adj
         if iter % log_interval == log_interval-1:
             print('\nIter {}: Average loss for the adjoint network: {:.3f}'.format(iter+1, total_loss/log_interval))
-            wandb.log({"Adjoint Net Loss": total_loss/log_interval})
+            print({"Adjoint Net Loss": total_loss/log_interval})
             if iter > LEAST_NUM_TRAIN*log_interval and (total_loss/log_interval) < stop_train_condition:
                 break
             total_loss = 0
@@ -264,7 +267,7 @@ def training(sigma, device, env, env_name,
     update_interval=10, rate=1,
     batch_size_hnet_sample=256, batch_size_hnet=32, batch_size_adj=64,
     lr_hnet=1e-3, lr_adj=1e-3, log_interval_hnet=1000, log_interval_adj=100,
-    num_hnet_train_max=1000000, num_adj_train_max=1000, stop_train_condition=0.001,
+    num_hnet_train_max=10000, num_adj_train_max=1000, stop_train_condition=0.001,
     mem_capacity=1000000):
     r"""
     PMP training procedure with different types of modes. Currently only focus on first phase training
