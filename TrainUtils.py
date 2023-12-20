@@ -16,15 +16,15 @@ MAX_VAL = 10.0
 LEAST_NUM_TRAIN = 10
 
 
-def get_environment(name, coef = 0.5):
+def get_environment(name):
     if name == 'quadrotor':
-        return Quadrotor(control_coef = coef)
+        return Quadrotor(0.5)
 def get_architectures():
     q_dim = 3 # Кол-во измерений
     adj_net = Mlp(input_dim=q_dim, output_dim=q_dim, layer_dims=[8, 16, 32], activation="tanh")
     hnet = Mlp(input_dim=2 * q_dim, output_dim=1, layer_dims=[8, 16, 32], activation="tanh")
     hnet_target = Mlp(input_dim=2 * q_dim, output_dim=1, layer_dims=[8, 16, 32], activation="tanh")
-    return q_dim, adj_net, hnet, hnet_target, 10, 2000
+    return q_dim, adj_net, hnet, hnet_target
 
 def get_train_params():
     T_hnet = 10
@@ -33,7 +33,7 @@ def get_train_params():
 
     control_coef = 0.5
     lr_hnet, lr_adj = 1e-3, 1e-4
-    return T_hnet, T_adj, n_timesteps, control_coef, lr_hnet, lr_adj
+    return T_hnet, T_adj, n_timesteps, control_coef, lr_hnet, lr_adj, 10, 2000
 
 def save_models(adj_net, hnet):
     torch.save(adj_net.state_dict(), 'models/adjoint.pth')

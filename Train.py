@@ -18,7 +18,7 @@ def train_env(env_name = "quadrotor", sigma=1, device=device_default,
     # Initialize hyperparameters detailed in param_file
     T_hnet, T_adj, n_timesteps, control_coef, lr_hnet, lr_adj, update_interval, log_interval_hnet = get_train_params()
     # Get environment (with specific (quadratic) control coefficient)
-    env = get_environment(env_name, control_coef=control_coef)
+    env = get_environment(env_name)
     # Set custom hyperparameter if allowed
     if update_interval_custom != -1:
         update_interval = update_interval_custom
