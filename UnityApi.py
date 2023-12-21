@@ -28,7 +28,7 @@ def main():
     server_ip = '127.0.0.1'
     server_port = 12435
 
-    # Подключаем сокет к указанному адресу и порту
+    # Подключаем сокет к указанному адресу и порту test
     server_socket.bind((server_ip, server_port))
     server_socket.listen(1)
 
