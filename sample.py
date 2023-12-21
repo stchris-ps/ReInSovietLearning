@@ -5,7 +5,6 @@ import torch
 import matplotlib
 
 
-matplotlib.use('Agg')
 _, adj_net, hnet, hnet_target = get_architectures()
 env = get_environment("quadrotor")
 load_models(adj_net, hnet)
@@ -25,6 +24,8 @@ uavoc = PhySys(uav.X, uav.U, dyn)
 
 def u(q):
     p = adj_net(torch.tensor(q, dtype=torch.float32))
+    print()
+    print(-env.f_u(q).transpose() @ p.detach().numpy().reshape(1, p.shape[0]).transpose())
     return -env.f_u(q).transpose() @ p.detach().numpy().reshape(1, p.shape[0]).transpose()
 
 ini_r_I = [-4, -6, 9.]

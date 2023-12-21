@@ -8,11 +8,11 @@ from quadrotor import Quadrotor
 device_default = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_env(env_name = "quadrotor", sigma=1, device=device_default,
-              activation='tanh', load_model=False, num_train=0, num_warmup=1,
+              activation='tanh', load_model=False, num_train=2, num_warmup=2,
               num_episodes_hnet=1024, num_episodes_adj=2048, rate=1.5,
-              num_hnet_train_max=10000, num_adj_train_max=100,
+              num_hnet_train_max=300000, num_adj_train_max=1000,
               batch_size_hnet=32, batch_size_hnet_sample=256, batch_size_adj=64,
-              update_interval_custom=-1, log_interval_custom=-1, stop_train_condition=0.01,
+              update_interval_custom=-1, log_interval_custom=-1, stop_train_condition=0.001,
               model_dir='models/', lr_change=False, lr_hnet_custom=1e-3, lr_adj_custom=1e-3):
     # Initialize networks with specific architectures detailed in arch_file
     _, adj_net, hnet, hnet_target = get_architectures()
@@ -43,7 +43,7 @@ def train_env(env_name = "quadrotor", sigma=1, device=device_default,
     # Training step
     print(f'\nTraining environment {env_name}')
 
-    log_interval_adj = 100
+    log_interval_adj = 1000
     training(sigma, device, env, env_name,
              adj_net, hnet, hnet_target,
              num_train, num_warmup, load_model,

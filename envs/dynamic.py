@@ -7,6 +7,7 @@ from gym.utils import seeding
 from os import path
 from physys import PhySys
 from quadrotor import toQuaternion, Quadrotor
+import torch
 
 
 ### Generic continuous environment for reduced Hamiltonian dynamics framework
@@ -92,7 +93,7 @@ class QuadroCopter(ContinuousEnv):
     # q([np.array]) = (q0, q1) = (position, velocity)
     def f(self, q, u):
         qn = self.physics.next_step(q, u)
-        return qn - q / 0.1
+        return (qn - q) * 20
 
     def f_u(self, q):
         dfu = casadi.jacobian(self.physics.dyn, self.physics.control)
@@ -103,12 +104,11 @@ class QuadroCopter(ContinuousEnv):
         return arr
 
     def L(self, q, u):
-        print(q)
-        print(u)
+        return self.control_coef * np.sum(u ** 2, axis=1) + self.g(q)
         dx = q[0][0] - 5
         dy = q[0][1] - 5
         dz = q[0][2] - 5
-        return np.array([dx ** 2 + dy ** 2 + dz ** 2 + self.control_coef * np.dot(u[0], u[0])])
+        return (np.array([dx ** 2 + dy ** 2 + dz ** 2 + self.control_coef * np.dot(u[0], u[0])]))
 
     def g(self, q):
         dx = q[0][0] - 5
@@ -116,6 +116,13 @@ class QuadroCopter(ContinuousEnv):
         dz = q[0][1] - 5
         d = dx ** 2 + dy ** 2 + dz ** 2
         return d ** 2
+    def nabla_g(self, q):
+        res = [0] * 13
+        res[0] = 2 * (q[0] - 5)
+        res[1] = 2 * (q[1] - 5)
+        res[2] = 2 * (q[2] - 5)
+        return torch.tensor(res, dtype=torch.float32)
+        return torch.tensor([2 * (q[0] - 5), 2 * (q[1] - 5), 2 * (q[2] - 5)], dtype = torch.float32)
 
     def sample_q(self, num_examples, mode='train'):
         ini_r_I = [-4, -6, 9.]
@@ -123,6 +130,6 @@ class QuadroCopter(ContinuousEnv):
         ini_q = toQuaternion(0, [1, -1, 1])
         ini_w = [0.0, 0.0, 0.0]
         ini_state = ini_r_I + ini_v_I + ini_q + ini_w
-        print("ini_state", ini_state)
+        #print("ini_state", ini_state)
         return ini_state
 

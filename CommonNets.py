@@ -44,6 +44,7 @@ class NoisyLinear(nn.Module):
         epsilon_in = self._scale_noise(self.in_features)
         epsilon_out = self._scale_noise(self.out_features)
         self.weight_epsilon.copy_(epsilon_out.ger(epsilon_in))
+        #print(self.weight_epsilon.shape)
         self.bias_epsilon.copy_(epsilon_out)
 
     def forward(self, input):
