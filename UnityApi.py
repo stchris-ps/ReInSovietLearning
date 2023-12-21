@@ -12,10 +12,11 @@ DEBUG = True
 # сейчас в функции get_data находится пример
 def get_data(message):
     data = list(map(float, message.replace(',', '.').split()))
+    rs = []
     if data[1] < 100:
-        rs = ['5', '5', '5,01', '5,01']
+        rs = ['5', '5,001', '5,001', '5,001']
     else:
-        rs = ['0', '0', '0,01', '0,01']
+        rs = ['0', '0', '0,001', '0,001']
     return rs
 
 
