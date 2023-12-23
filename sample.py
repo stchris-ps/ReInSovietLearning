@@ -24,9 +24,8 @@ uavoc = PhySys(uav.X, uav.U, dyn)
 
 def u(q):
     p = adj_net(torch.tensor(q, dtype=torch.float32))
-    print()
-    print(-env.f_u(q).transpose() @ p.detach().numpy().reshape(1, p.shape[0]).transpose())
-    return -env.f_u(q).transpose() @ p.detach().numpy().reshape(1, p.shape[0]).transpose()
+    print(-env.f_usingle(q) @ p.detach().numpy().reshape(1, p.shape[0]).transpose())
+    return -env.f_usingle(q) @ p.detach().numpy().reshape(1, p.shape[0]).transpose()
 
 ini_r_I = [-4, -6, 9.]
 ini_v_I = [0.0, 0.0, 0.0]

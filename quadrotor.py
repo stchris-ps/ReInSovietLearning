@@ -221,9 +221,9 @@ class Quadrotor:
         ax.set_ylabel('Y (m)', fontsize=10, labelpad=5)
         ax.set_zlabel('Z (m)', fontsize=10, labelpad=5)
         # тут можно изменить размер графика
-        ax.set_zlim(0, 10)
-        ax.set_ylim(-8, 8)
-        ax.set_xlim(-8, 8)
+        ax.set_zlim(-10, 10)
+        ax.set_ylim(-10, 10)
+        ax.set_xlim(-10, 10)
         ax.set_title(title, pad=20, fontsize=15)
 
         # target landing point

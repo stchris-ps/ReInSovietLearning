@@ -29,5 +29,4 @@ class PhySys:
     # control_val - массив размера 4 - управление моторами квадрокоптера на текущем шаге
     def next_step(self, state, control_val):
         new_state = self.dyn_fn(state, np.array(control_val)).full().flatten()
-
         return new_state
